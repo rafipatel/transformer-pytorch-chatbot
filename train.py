@@ -12,7 +12,7 @@ d_model = 256
 heads = 8
 num_layers = 3
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-epochs = 500
+epochs = 260
 
 # with open('WORDMAP_corpus.json', 'r') as j:
 with open('/users/adfx757/transformer-pytorch-chatbot/WORDMAP_corpus.json', 'r') as j:
@@ -76,7 +76,7 @@ def training(train_loader, transformer, criterion, epoch,logger):
         
         train(train_loader, transformer, criterion, epoch,logger)
         
-        if epoch > 0 and (epoch % 100) == 0:
+        if epoch > 0 and (epoch % 50) == 0:
             state = {'epoch': epoch, 'transformer': transformer, 'transformer_optimizer': transformer_optimizer}
             print("Saving the model")
             torch.save(state, 'checkpoint_' + str(epoch) + '.pth.tar')
