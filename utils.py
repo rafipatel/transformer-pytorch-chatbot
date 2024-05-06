@@ -11,7 +11,7 @@ class mydataset(Dataset):
 
     def __init__(self):
 
-        self.pairs = json.load(open(r'c:\Users\rafip\Downloads\pairs_encoded.json'))
+        self.pairs = json.load(open(r"/users/adfx757/transformer-pytorch-chatbot\pairs_encoded.json"))
 
         self.dataset_size = len(self.pairs)
 
