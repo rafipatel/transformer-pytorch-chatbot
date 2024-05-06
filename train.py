@@ -76,7 +76,7 @@ def training(train_loader, transformer, criterion, epoch,logger):
         
         train(train_loader, transformer, criterion, epoch,logger)
         
-        if epoch > 0 and (epoch % 100) == 0:
+        if epoch > 0 and (epoch % 1000) == 0:
             state = {'epoch': epoch, 'transformer': transformer, 'transformer_optimizer': transformer_optimizer}
             print("Saving the model")
             torch.save(state, 'checkpoint_' + str(epoch) + '.pth.tar')
