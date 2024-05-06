@@ -14,7 +14,7 @@ num_layers = 3
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 epochs = 1000
 
-with open('WORDMAP_corpus.json', 'r') as j:
+with open('/users/adfx757/transformer-pytorch-chatbot/WORDMAP_corpus.json', 'r') as j:
     word_map = json.load(j)
     
 transformer = Transformer(d_model = d_model, heads = heads, num_layers = num_layers, word_map = word_map)
