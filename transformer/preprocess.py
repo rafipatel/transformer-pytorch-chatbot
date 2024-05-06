@@ -78,7 +78,9 @@ print(len(pairs))
 print(len(old_pairs))
 
 
-pairs.extend(old_pairs)
+# pairs.extend(old_pairs)
+
+pairs = old_pairs
 
 
 print(len(pairs))
@@ -129,5 +131,3 @@ with open('pairs_encoded.json', 'w') as p:
     json.dump(pairs_encoded, p)
 
 # print(word_map)He
-
-print(pairs[:2])
