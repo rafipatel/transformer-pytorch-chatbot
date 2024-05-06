@@ -8,12 +8,13 @@ from utils import *
 
 from logger import Logger
 
-d_model = 128
+d_model = 512
 heads = 8
-num_layers = 3
+num_layers = 1
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-epochs = 1000
+epochs = 10000
 
+# with open('WORDMAP_corpus.json', 'r') as j:
 with open('/users/adfx757/transformer-pytorch-chatbot/WORDMAP_corpus.json', 'r') as j:
     word_map = json.load(j)
     
