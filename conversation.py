@@ -8,8 +8,8 @@ from preprocess import *
 from train import *
 
 load_checkpoint = True
-ckpt_path = r"C:\Users\rafip\Downloads\checkpoint_256_250.pth.tar"
-ckpt_path_1 = r"C:\Users\rafip\Downloads\checkpoint_256_100.pth.tar"
+ckpt_path = r"C:\Users\rafip\Downloads\checkpoint_900.pth.tar"
+ckpt_path_1 = r"C:\Users\rafip\Downloads\checkpoint_900.pth.tar"
 
 
 
