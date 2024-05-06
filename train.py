@@ -84,7 +84,7 @@ def training(train_loader, transformer, criterion, epoch,logger):
 def main():
     # Set random seed for reproducibility
 
-    train_loader = torch.utils.data.DataLoader(Dataset(),
+    train_loader = torch.utils.data.DataLoader(mydataset(),
                                            batch_size = 100, 
                                            shuffle=True, 
                                            pin_memory=True)

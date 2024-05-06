@@ -7,7 +7,7 @@ import json
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-class Dataset(Dataset):
+class mydataset(Dataset):
 
     def __init__(self):
 
