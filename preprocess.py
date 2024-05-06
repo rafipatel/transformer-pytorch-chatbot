@@ -1,8 +1,10 @@
 from collections import Counter
 import json
+import pandas as pd
 
-corpus_movie_conv = 'cornell movie-dialogs corpus\movie_conversations.txt'
-corpus_movie_lines = 'cornell movie-dialogs corpus\movie_lines.txt'
+corpus_movie_conv = 'cornell_and_deepmind_data\movie_conversations.txt'
+corpus_movie_lines = 'cornell_and_deepmind_data\movie_lines.txt'
+deepmind_narrativeQA = 'cornell_and_deepmind_data\qaps.csv'
 max_len = 25
 
 
@@ -11,6 +13,8 @@ with open(corpus_movie_conv, 'r') as c:
 
 with open(corpus_movie_lines, 'r') as l:
     lines = l.readlines()
+
+df = pd.read_csv(deepmind_narrativeQA)
 
 
 
@@ -29,7 +33,7 @@ def remove_punc(string):
     return no_punct.lower()
 
 
-pairs = []
+old_pairs = []
 for con in conv:
     ids = eval(con.split(" +++$+++ ")[-1])
     for i in range(len(ids)):
@@ -37,12 +41,48 @@ for con in conv:
         
         if i==len(ids)-1:
             break
-        
+    
+
         first = remove_punc(lines_dic[ids[i]].strip())      
         second = remove_punc(lines_dic[ids[i+1]].strip())
         qa_pairs.append(first.split()[:max_len])
         qa_pairs.append(second.split()[:max_len])
-        pairs.append(qa_pairs)
+        old_pairs.append(qa_pairs)
+
+
+pairs = list()
+for i,row in df.iterrows():
+    qa_pairs = list()
+    qa_pairs2 = list()
+
+    if type(row['question']) == str and type(row['answer1']) == str and type(row['answer2']) == str:
+        first = remove_punc(row['question'].strip())  
+        second = remove_punc(row['answer1'].strip())
+        third = remove_punc(row['answer2'].strip())
+    
+    else:
+        pass
+
+    qa_pairs.append(first.split()[:max_len])
+    qa_pairs.append(second.split()[:max_len])
+
+
+    qa_pairs2.append(first.split()[:max_len])
+    qa_pairs2.append(third.split()[:max_len])
+
+
+    pairs.append(qa_pairs)
+    pairs.append(qa_pairs2)
+
+print(len(pairs))
+print(len(old_pairs))
+
+
+pairs.extend(old_pairs)
+
+
+print(len(pairs))
+
 
 
 
@@ -89,3 +129,5 @@ with open('pairs_encoded.json', 'w') as p:
     json.dump(pairs_encoded, p)
 
 # print(word_map)He
+
+print(pairs[:2])
