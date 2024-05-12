@@ -5,3 +5,17 @@ decoder_learning_ratio : 5.0
 n_iteration : 4000
 print_every : 1
 save_every : 500
+
+
+model:
+  model_name : 'cb_model'
+  attn_model : 'dot'
+  #``attn_model = 'general'``
+  #``attn_model = 'concat'``
+  hidden_size : 500
+  encoder_n_layers : 2
+  decoder_n_layers : 2
+  dropout : 0.1
+  batch_size : 64
+  checkpoint_iter : 4000
+  attention : True

@@ -18,6 +18,14 @@ from model import *
 from logger import Logger
 import yaml
 
+
+
+
+with open("config.yaml", "r") as file:
+    # Load the YAML data
+    data = yaml.safe_load(file)
+
+
 def train(input_variable, lengths, target_variable, mask, max_target_len, encoder, decoder, embedding,
           encoder_optimizer, decoder_optimizer, batch_size, clip, max_length=MAX_LENGTH):
 
@@ -178,20 +186,33 @@ def trainIters(model_name, voc, pairs, encoder, decoder, encoder_optimizer, deco
 #
 
 # Configure models
-model_name = 'cb_model'
-attn_model = 'dot'
-#``attn_model = 'general'``
-#``attn_model = 'concat'``
-hidden_size = 500
-encoder_n_layers = 2
-decoder_n_layers = 2
-dropout = 0.1
-batch_size = 64
+# model_name = 'cb_model'
+# attn_model = 'dot'
+# #``attn_model = 'general'``
+# #``attn_model = 'concat'``
+# hidden_size = 500
+# encoder_n_layers = 2
+# decoder_n_layers = 2
+# dropout = 0.1
+# batch_size = 64
 
-# Set checkpoint to load from; set to None if starting from scratch
-loadFilename = None
-checkpoint_iter = 4000
-attention = True
+
+model_name = data['model']['model_name']
+attn_model = data['model']['attn_model']
+hidden_size = data['model']['hidden_size']
+encoder_n_layers = data['model']['encoder_n_layers']
+decoder_n_layers = data['model']['decoder_n_layers']
+dropout = data['model']['dropout']
+batch_size = data['model']['batch_size']
+
+
+loadFilename = None # Set checkpoint to load from; set to None if starting from scratch
+checkpoint_iter = data['model']['checkpoint_iter']
+attention = data['model']['attention']
+
+
+# checkpoint_iter = 4000
+# attention = True
 
 #############################################################
 # Sample code to load from a checkpoint:
@@ -248,9 +269,6 @@ print('Models built and ready to go!')
 
 # Configure training/optimization
 
-with open("config.yaml", "r") as file:
-    # Load the YAML data
-    data = yaml.safe_load(file)
 
 clip = data['clip'] 
 teacher_forcing_ratio = data['teacher_forcing_ratio'] 
@@ -294,7 +312,7 @@ def main():
     # Run training iterations
 
 
-    wandb_logger = Logger(f"inm706_Transformer", project = "inm706_Trans")
+    wandb_logger = Logger(f"inm706_Seq2Seq", project = "inm706_Seq2Seq_without_attention")
     logger = wandb_logger.get_logger()
     print("Starting Training!")
 
