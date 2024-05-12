@@ -3,8 +3,8 @@ teacher_forcing_ratio : 1.0
 learning_rate : 0.0001
 decoder_learning_ratio : 5.0
 n_iteration : 10000
-print_every : 1
-save_every : 1
+print_every : 10
+save_every : 3000
 
 
 model:
