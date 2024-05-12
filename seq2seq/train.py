@@ -174,7 +174,7 @@ def trainIters(model_name, voc, pairs, encoder, decoder, encoder_optimizer, deco
                 'embedding': embedding.state_dict()
             }, checkpoint_path)
 
-            print("Checkpoint Created")
+            print("Checkpoint Created", config_file)
 
 
 
