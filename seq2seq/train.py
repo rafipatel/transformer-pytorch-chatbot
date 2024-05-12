@@ -320,9 +320,6 @@ def main():
            embedding, encoder_n_layers, decoder_n_layers, save_dir, n_iteration, batch_size,
            print_every, save_every, clip, corpus_name, loadFilename,logger)
            
-
-
-
-# if __name__ == "__main__":
-#     main()
+if __name__ == "__main__":
+    main()
 
