@@ -21,7 +21,7 @@ import yaml
 
 
 
-with open("config.yaml", "r") as file:
+with open("/users/adfx757/transformer-pytorch-chatbot/seq2seq/config.yaml", "r") as file:
     # Load the YAML data
     data = yaml.safe_load(file)
 
