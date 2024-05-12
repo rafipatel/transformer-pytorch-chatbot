@@ -19,9 +19,12 @@ from logger import Logger
 import yaml
 
 
+if os.name == 'nt':
+    config_file = "config.yaml"
+else:
+    config_file = "/users/adfx757/transformer-pytorch-chatbot/seq2seq/config.yaml"
 
-
-with open("/users/adfx757/transformer-pytorch-chatbot/seq2seq/config.yaml", "r") as file:
+with open(config_file, "r") as file:
     # Load the YAML data
     data = yaml.safe_load(file)
 
@@ -154,9 +157,12 @@ def trainIters(model_name, voc, pairs, encoder, decoder, encoder_optimizer, deco
 
         # Save checkpoint
         if (iteration % save_every == 0):
-            directory = os.path.join(save_dir, model_name, corpus_name, '{}-{}_{}'.format(encoder_n_layers, decoder_n_layers, hidden_size))
-            if not os.path.exists(directory):
-                os.makedirs(directory)
+            # directory = os.path.join(save_dir, model_name, corpus_name, '{}-{}_{}'.format(encoder_n_layers, decoder_n_layers, hidden_size))
+            if not os.path.exists("checkpoints"):
+                os.makedirs("checkpoints")
+
+            checkpoint_name = f"checkpoint_seq2seq_{iteration}.pth.tar"
+            checkpoint_path = os.path.join("checkpoints", checkpoint_name)
             torch.save({
                 'iteration': iteration,
                 'en': encoder.state_dict(),
@@ -166,7 +172,7 @@ def trainIters(model_name, voc, pairs, encoder, decoder, encoder_optimizer, deco
                 'loss': loss,
                 'voc_dict': voc.__dict__,
                 'embedding': embedding.state_dict()
-            }, os.path.join(directory, '{}_{}.tar'.format(iteration, 'checkpoint')))
+            }, checkpoint_path)
 
 
 
