@@ -1,10 +1,10 @@
 clip : 50.0
 teacher_forcing_ratio : 1.0
-learning_rate : 0.0001
+learning_rate : 0.01
 decoder_learning_ratio : 5.0
-n_iteration : 1000000
-print_every : 100
-save_every :  10000
+n_iteration : 10000
+print_every : 10
+save_every :  100
 
 
 model:
@@ -12,10 +12,10 @@ model:
   attn_model : 'dot'
   #``attn_model = 'general'``
   #``attn_model = 'concat'``
-  hidden_size : 500
+  hidden_size : 200
   encoder_n_layers : 2
   decoder_n_layers : 2
-  dropout : 0.1
+  dropout : 0.2
   batch_size : 64
   checkpoint_iter : 4000
-  attention : False
+  attention : True
