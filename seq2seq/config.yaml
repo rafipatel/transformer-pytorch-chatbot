@@ -4,7 +4,7 @@ learning_rate : 0.01
 decoder_learning_ratio : 5.0
 n_iteration : 10000
 print_every : 10
-save_every :  100
+save_every :  3000
 
 
 model:
