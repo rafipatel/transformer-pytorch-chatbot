@@ -420,3 +420,5 @@ def maskNLLLoss(inp, target, mask):
 #   sequential models can be very straightforward.
 #
 #
+# if __name__ == "__main__": 
+#     main()
