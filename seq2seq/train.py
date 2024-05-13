@@ -161,7 +161,12 @@ def trainIters(model_name, voc, pairs, encoder, decoder, encoder_optimizer, deco
             if not os.path.exists("checkpoints"):
                 os.makedirs("checkpoints")
 
-            checkpoint_name = f"checkpoint_seq2seq_{iteration}.pth.tar"
+            if attention:
+                checkpoint_name = f"checkpoint_seq2seq_{iteration}_attention.pth.tar"
+            
+            else:
+                checkpoint_name = f"checkpoint_seq2seq_{iteration}.pth.tar"
+                
             checkpoint_path = os.path.join("checkpoints", checkpoint_name)
             torch.save({
                 'iteration': iteration,
@@ -320,7 +325,7 @@ def main():
     # Run training iterations
 
 
-    wandb_logger = Logger(f"inm706_Seq2Seq", project = "inm706_Seq2Seq_without_attention")
+    wandb_logger = Logger(f"inm706_Seq2Seq", project = "inm706_Seq2Seq_attention")
     logger = wandb_logger.get_logger()
     print("Starting Training!")
 
