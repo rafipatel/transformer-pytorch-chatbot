@@ -123,6 +123,7 @@ def train(input_variable, lengths, target_variable, mask, max_target_len, encode
 
 def trainIters(model_name, voc, pairs, encoder, decoder, encoder_optimizer, decoder_optimizer, embedding, encoder_n_layers, decoder_n_layers, save_dir, n_iteration, batch_size, print_every, save_every, clip, corpus_name, loadFilename,logger):
 
+    print("Creating TrainingBatches..")
     # Load batches for each iteration
     training_batches = [batch2TrainData(voc, [random.choice(pairs) for _ in range(batch_size)])
                       for _ in range(n_iteration)]
@@ -166,7 +167,7 @@ def trainIters(model_name, voc, pairs, encoder, decoder, encoder_optimizer, deco
             
             else:
                 checkpoint_name = f"checkpoint_seq2seq_{iteration}.pth.tar"
-                
+
             checkpoint_path = os.path.join("checkpoints", checkpoint_name)
             torch.save({
                 'iteration': iteration,

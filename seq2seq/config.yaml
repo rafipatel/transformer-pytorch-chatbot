@@ -1,10 +1,10 @@
 clip : 50.0
 teacher_forcing_ratio : 1.0
-learning_rate : 0.00001
-decoder_learning_ratio : 5.0
-n_iteration : 50000
-print_every : 100
-save_every :  10000
+learning_rate : 0.0001
+decoder_learning_ratio : 1.0
+n_iteration : 4000
+print_every : 1
+save_every :  500
 
 
 model:
@@ -15,7 +15,7 @@ model:
   hidden_size : 500
   encoder_n_layers : 2
   decoder_n_layers : 2
-  dropout : 0.2
+  dropout : 0.1
   batch_size : 64
   checkpoint_iter : 4000
   attention : True
