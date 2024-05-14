@@ -326,7 +326,7 @@ def main():
     # Run training iterations
 
 
-    wandb_logger = Logger(f"inm706_Seq2Seq", project = "inm706_Seq2Seq_attention")
+    wandb_logger = Logger(f"inm706_Seq2Seq", project = "inm706_Seq2Seq_without_attention")
     logger = wandb_logger.get_logger()
     print("Starting Training!")
 
