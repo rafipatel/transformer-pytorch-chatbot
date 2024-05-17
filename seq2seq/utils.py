@@ -15,9 +15,11 @@ import math
 import json
 
 
-USE_CUDA = torch.cuda.is_available()
-device = torch.device("cuda" if USE_CUDA else "cpu")
-
+MIN_COUNT = 3    # Minimum word count threshold for trimming
+# Default word tokens
+PAD_token = 0  # Used for padding short sentences
+SOS_token = 1  # Start-of-sentence token
+EOS_token = 2  # End-of-sentence token
 
 ######################################################################
 # Load & Preprocess Data
@@ -43,8 +45,7 @@ device = torch.device("cuda" if USE_CUDA else "cpu")
 # original format.
 #
 
-corpus_name = "movie-corpus"
-corpus = os.path.join("datasets", corpus_name)
+
 
 def printLines(file, n=10):
     with open(file, 'rb') as datafile:
@@ -115,34 +116,6 @@ def extractSentencePairs(conversations):
 
 
 ######################################################################
-# Now we’ll call these functions and create the file. We’ll call it
-# ``formatted_movie_lines.txt``.
-#
-
-# Define path to new file
-datafile = os.path.join(corpus, "formatted_movie_lines.txt")
-
-delimiter = '\t'
-# Unescape the delimiter
-delimiter = str(codecs.decode(delimiter, "unicode_escape"))
-
-# Initialize lines dict and conversations dict
-lines = {}
-conversations = {}
-# Load lines and conversations
-print("\nProcessing corpus into lines and conversations...")
-lines, conversations = loadLinesAndConversations(os.path.join(corpus, "utterances.jsonl"))
-
-# Write new csv file
-print("\nWriting newly formatted file...")
-with open(datafile, 'w', encoding='utf-8') as outputfile:
-    writer = csv.writer(outputfile, delimiter=delimiter, lineterminator='\n')
-    for pair in extractSentencePairs(conversations):
-        writer.writerow(pair)
-
-# Print a sample of lines
-# print("\nSample lines from file:")
-# printLines(datafile)
 
 
 ######################################################################
@@ -165,10 +138,6 @@ with open(datafile, 'w', encoding='utf-8') as outputfile:
 # on trimming later.
 #
 
-# Default word tokens
-PAD_token = 0  # Used for padding short sentences
-SOS_token = 1  # Start-of-sentence token
-EOS_token = 2  # End-of-sentence token
 
 class Voc:
     def __init__(self, name):
@@ -204,9 +173,7 @@ class Voc:
             if v >= min_count:
                 keep_words.append(k)
 
-        print('keep_words {} / {} = {:.4f}'.format(
-            len(keep_words), len(self.word2index), len(keep_words) / len(self.word2index)
-        ))
+        #print('keep_words {} / {} = {:.4f}'.format(    len(keep_words), len(self.word2index), len(keep_words) / len(self.word2index)))
 
         # Reinitialize dictionaries
         self.word2index = {}
@@ -251,7 +218,7 @@ def normalizeString(s):
 
 # Read query/response pairs and return a voc object
 def readVocs(datafile, corpus_name):
-    print("Reading lines...")
+    #print("Reading lines...")
     # Read the file and split into lines
     lines = open(datafile, encoding='utf-8').\
         read().strip().split('\n')
@@ -271,26 +238,20 @@ def filterPairs(pairs):
 
 # Using the functions defined above, return a populated voc object and pairs list
 def loadPrepareData(corpus, corpus_name, datafile, save_dir):
-    print("Start preparing training data ...")
+    #print("Start preparing training data ...")
     voc, pairs = readVocs(datafile, corpus_name)
-    print("Read {!s} sentence pairs".format(len(pairs)))
+    #print("Read {!s} sentence pairs".format(len(pairs)))
     pairs = filterPairs(pairs)
-    print("Trimmed to {!s} sentence pairs".format(len(pairs)))
-    print("Counting words...")
+    #print("Trimmed to {!s} sentence pairs".format(len(pairs)))
+    #print("Counting words...")
     for pair in pairs:
         voc.addSentence(pair[0])
         voc.addSentence(pair[1])
-    print("Counted words:", voc.num_words)
+    #print("Counted words:", voc.num_words)
     return voc, pairs
 
 
-# Load/Assemble voc and pairs
-save_dir = os.path.join("data", "save")
-voc, pairs = loadPrepareData(corpus, corpus_name, datafile, save_dir)
-# Print some pairs to validate
-# print("\npairs:")
-# for pair in pairs[:10]:
-#     print(pair)
+
 
 
 ######################################################################
@@ -306,7 +267,7 @@ voc, pairs = loadPrepareData(corpus, corpus_name, datafile, save_dir)
 # 2) Filter out pairs with trimmed words.
 #
 
-MIN_COUNT = 3    # Minimum word count threshold for trimming
+
 
 def trimRareWords(voc, pairs, MIN_COUNT):
     # Trim words used under the MIN_COUNT from the voc
@@ -333,12 +294,11 @@ def trimRareWords(voc, pairs, MIN_COUNT):
         if keep_input and keep_output:
             keep_pairs.append(pair)
 
-    print("Trimmed from {} pairs to {}, {:.4f} of total".format(len(pairs), len(keep_pairs), len(keep_pairs) / len(pairs)))
+    #print("Trimmed from {} pairs to {}, {:.4f} of total".format(len(pairs), len(keep_pairs), len(keep_pairs) / len(pairs)))
     return keep_pairs
 
 
-# Trim voc and pairs
-pairs = trimRareWords(voc, pairs, MIN_COUNT)
+
 
 
 ######################################################################
@@ -442,13 +402,75 @@ def batch2TrainData(voc, pair_batch):
     return inp, lengths, output, mask, max_target_len
 
 
+
+#-------------------------------------
+
+# if __name__ == "__main__":
+
+USE_CUDA = torch.cuda.is_available()
+device = torch.device("cuda" if USE_CUDA else "cpu")
+
+
+corpus_name = "movie-corpus"
+corpus = os.path.join("datasets", corpus_name)
+
+# Now we’ll call these functions and create the file. We’ll call it
+# ``formatted_movie_lines.txt``.
+#
+
+# Define path to new file
+datafile = os.path.join(corpus, "formatted_movie_lines.txt")
+
+delimiter = '\t'
+# Unescape the delimiter
+delimiter = str(codecs.decode(delimiter, "unicode_escape"))
+
+# Initialize lines dict and conversations dict
+lines = {}
+conversations = {}
+
+
+# #print a sample of lines
+# #print("\nSample lines from file:")
+# printLines(datafile)
+
+
+
+# Load lines and conversations
+# #print("\nProcessing corpus into lines and conversations...")
+lines, conversations = loadLinesAndConversations(os.path.join(corpus, "utterances.jsonl"))
+
+# Write new csv file
+# #print("\nWriting newly formatted file...")
+with open(datafile, 'w', encoding='utf-8') as outputfile:
+    writer = csv.writer(outputfile, delimiter=delimiter, lineterminator='\n')
+    for pair in extractSentencePairs(conversations):
+        writer.writerow(pair)
+
+# Load/Assemble voc and pairs
+save_dir = os.path.join("data", "save")
+voc, pairs = loadPrepareData(corpus, corpus_name, datafile, save_dir)
+# #print some pairs to validate
+# #print("\npairs:")
+# for pair in pairs[:10]:
+#     #print(pair)
+
+
+
+
+
+# Trim voc and pairs
+pairs = trimRareWords(voc, pairs, MIN_COUNT)
+
+
+
 # Example for validation
 small_batch_size = 5
 batches = batch2TrainData(voc, [random.choice(pairs) for _ in range(small_batch_size)])
 input_variable, lengths, target_variable, mask, max_target_len = batches
 
-# print("input_variable:", input_variable)
-# print("lengths:", lengths)
-# print("target_variable:", target_variable)
-# print("mask:", mask)
-# print("max_target_len:", max_target_len)
+    # #print("input_variable:", input_variable)
+    # #print("lengths:", lengths)
+    # #print("target_variable:", target_variable)
+    # #print("mask:", mask)
+    # #print("max_target_len:", max_target_len)
