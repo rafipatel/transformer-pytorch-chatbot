@@ -1,0 +1,4 @@
+depth_model : 256
+heads : 8
+num_layers : 3 
+epochs : 100000
