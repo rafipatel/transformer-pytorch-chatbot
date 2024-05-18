@@ -7,14 +7,26 @@ from models import *
 from utils import *
 
 from logger import Logger
+import yaml
 
-d_model = 256
-heads = 8
-num_layers = 3
+if os.name == 'nt':
+    config_file = "config.yaml"
+    json_files = "WORDMAP_corpus.json"
+else:
+    config_file = "/users/adfx757/transformer-pytorch-chatbot/transformer/config.yaml"
+    json_files = "/users/adfx757/transformer-pytorch-chatbot/transformer/WORDMAP_corpus.json"
+
+with open(config_file, "r") as file:
+    # Load the YAML data
+    data = yaml.safe_load(file)
+
+d_model = data["depth_model"]
+heads = data["heads"]
+num_layers = data["num_layers"]
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-epochs = 260
+epochs = data["epochs"]
 
-with open('WORDMAP_corpus.json', 'r') as j:
+with open(json_files, 'r') as j:
 # with open('/users/adfx757/transformer-pytorch-chatbot/WORDMAP_corpus.json', 'r') as j:
     word_map = json.load(j)
     
@@ -76,7 +88,7 @@ def training(train_loader, transformer, criterion, epoch,logger):
         
         train(train_loader, transformer, criterion, epoch,logger)
         
-        if epoch > 0 and (epoch % 50) == 0:
+        if epoch > 0 and (epoch % 5000) == 0:
             state = {'epoch': epoch, 'transformer': transformer, 'transformer_optimizer': transformer_optimizer}
             print("Saving the model")
             torch.save(state, 'checkpoint_' + str(epoch) + '.pth.tar')
