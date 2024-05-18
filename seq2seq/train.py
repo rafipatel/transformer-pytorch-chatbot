@@ -259,15 +259,16 @@ if loadFilename:
 # Initialize encoder & decoder models
 encoder = EncoderRNN(hidden_size, embedding, encoder_n_layers, dropout)
 decoder = LuongAttnDecoderRNN(attn_model, embedding, hidden_size, voc.num_words, decoder_n_layers, dropout,attention)
-if attention:
-    print("using attention")
+
 if loadFilename:
     encoder.load_state_dict(encoder_sd)
     decoder.load_state_dict(decoder_sd)
+
+print('Models building...')
 # Use appropriate device
 encoder = encoder.to(device)
 decoder = decoder.to(device)
-print('Models built and ready to go!')
+
 
 
 ######################################################################
@@ -297,7 +298,7 @@ encoder.train()
 decoder.train()
 
 # Initialize optimizers
-print('Building optimizers ...')
+# print('Building optimizers ...')
 
 encoder_optimizer = optim.Adam(encoder.parameters(), lr=learning_rate)
 decoder_optimizer = optim.Adam(decoder.parameters(), lr=learning_rate * decoder_learning_ratio)

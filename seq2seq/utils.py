@@ -15,7 +15,7 @@ import math
 import json
 
 
-MIN_COUNT = 0   # Minimum word count threshold for trimming
+MIN_COUNT = 3   # Minimum word count threshold for trimming
 # Default word tokens
 PAD_token = 0  # Used for padding short sentences
 SOS_token = 1  # Start-of-sentence token
@@ -173,7 +173,7 @@ class Voc:
             if v >= min_count:
                 keep_words.append(k)
 
-        print('keep_words {} / {} = {:.4f}'.format( len(keep_words), len(self.word2index), len(keep_words) / len(self.word2index)))
+        # print('keep_words {} / {} = {:.4f}'.format( len(keep_words), len(self.word2index), len(keep_words) / len(self.word2index)))
 
         # Reinitialize dictionaries
         self.word2index = {}
@@ -181,7 +181,7 @@ class Voc:
         self.index2word = {PAD_token: "PAD", SOS_token: "SOS", EOS_token: "EOS"}
         self.num_words = 3 # Count default tokens
 
-        print("Keep words total =", len(keep_words))
+        # print("Keep words total =", len(keep_words))
 
         for word in keep_words:
             self.addWord(word)
