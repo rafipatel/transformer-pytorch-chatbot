@@ -11,7 +11,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 if os.name == 'nt':
     json_file = "pairs_encoded.json"
 else:
-    json_file = "/users/adfx757/transformer-pytorch-chatbot/seq2seq/pairs_encoded.json"
+    json_file = "/users/adfx757/transformer-pytorch-chatbot/transformer/pairs_encoded.json"
 
 class mydataset(Dataset):
 

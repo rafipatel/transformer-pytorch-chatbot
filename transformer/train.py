@@ -73,7 +73,7 @@ def train(train_loader, transformer, criterion, epoch,logger):
         sum_loss += loss.item() * samples
         count += samples
         
-        if i % 100 == 0:
+        if epoch % 200 == 0:
             print("Epoch [{}][{}/{}]\tLoss: {:.3f}".format(epoch, i, len(train_loader), sum_loss/count))
         # logger.log("Epoch [{}][{}/{}]\tLoss: {:.3f}".format(epoch, i, len(train_loader), sum_loss/count))
             result = sum_loss/count
