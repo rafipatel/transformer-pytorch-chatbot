@@ -107,24 +107,6 @@ if load_checkpoint:
 
 
 def chat_with_chatbot(loadCheckpoint):
-    print("loading checkpoint...")
-    checkpoint = torch.load(loadCheckpoint, map_location=torch.device('cpu'))
-    transformer = checkpoint['transformer']
-    while(1):
-        question = input("Question: ") 
-        question = question.lower()
-        if question == 'q':
-            break
-        max_len = 25 #input("Maximum Reply Length: ")
-        enc_qus = [word_map.get(word, word_map['<unk>']) for word in question.split()]
-        print(enc_qus)
-        question = torch.LongTensor(enc_qus).to(device).unsqueeze(0)
-        question_mask = (question!=0).to(device).unsqueeze(1).unsqueeze(1)  
-        sentence,_,_,_ = evaluate(transformer, question, question_mask, int(max_len), word_map)
-        print("ChatGPT-10:",sentence)
-
-
-def chat_with_chatbot1(loadCheckpoint):
     # Load model checkpoint
     checkpoint = torch.load(loadCheckpoint, map_location=torch.device('cpu'))
     transformer = checkpoint['transformer']
