@@ -79,8 +79,8 @@ def evaluate(transformer, question, question_mask, max_len, word_map):
 
     sentence = ' '.join([rev_word_map[sen_idx[k]] for k in range(len(sen_idx))])
 
-    #print(word_tensor)   
-    #print(word_tensor.size())   
+    # print(word_tensor)   
+    # print(word_tensor.size())   
 
     # softmax_rawpreds_tensor = F.softmax(raw_preds,dim=1)
     softmax_rawpreds_tensor = raw_preds
@@ -100,18 +100,14 @@ if load_checkpoint:
     checkpoint = torch.load(ckpt_path, map_location=torch.device('cpu'))
     transformer = checkpoint['transformer']
 
-    checkpoint1 = torch.load(ckpt_path_1, map_location=torch.device('cpu'))
-    transformer_1 = checkpoint1['transformer']
-
-
-
 
 def chat_with_chatbot(loadCheckpoint):
     # Load model checkpoint
     checkpoint = torch.load(loadCheckpoint, map_location=torch.device('cpu'))
+    print("Loaded checkpoint path : ",loadCheckpoint)
     transformer = checkpoint['transformer']
-    def send_message(b):
 
+    def send_message(b):
         question = text_input.value
         questions = question.lower()
         if question.lower() in ['q', 'quit']:
@@ -149,6 +145,8 @@ def chat_with_chatbot(loadCheckpoint):
 inputs = ["hi","how are you?","do you know a place?"]
 responses = ["hi", "i am fine","yes i know"]
 
+# inputs = "hello my friend"
+
 def evaluateInput(evaluate, inputs):
     all_perplexity_score = list()
     metric = Perplexity()
@@ -185,10 +183,49 @@ def evaluateInput(evaluate, inputs):
     #print("metric.compute()", metric.compute())
 
 
+    return sentence #all_perplexity_score,  avg_perplexity_score, metric.compute()
+
+def evaluatemetric(evaluate, inputs):
+    all_perplexity_score = list()
+    metric = Perplexity()
+    all_bleu = list()
+    for (question,response) in zip(inputs,responses):
+    # for question in [inputs]:
+    # question = input("Question: ") 
+        question = question.lower()
+        if question == 'q':
+            break
+        max_len = 25 #input("Maximum Reply Length: ")
+        enc_qus = [word_map.get(word, word_map['<unk>']) for word in question.split()]
+        question = torch.LongTensor(enc_qus).to(device).unsqueeze(0)
+        question_mask = (question!=0).to(device).unsqueeze(1).unsqueeze(1)  
+        sentence, perplexity_score, raw_preds,word_tensor = evaluate(transformer, question, question_mask, int(max_len), word_map)
+        
+        metric.update(raw_preds,word_tensor)
+        # #print(perplexity_score)
+        all_perplexity_score.append(perplexity_score.item())
+        print("chatGPT-10:",sentence)
+        response_token = nltk.word_tokenize(response)
+        output_token = nltk.word_tokenize(sentence)
+    #     #print(response_token,output_token)
+        bleu_score = sentence_bleu([response_token], output_token)
+
+        # print('BLEU Score:', bleu_score)
+        all_bleu.append(bleu_score)
+    avg_perplexity_score = sum(all_perplexity_score)/len(all_perplexity_score)
+    avg_bleu_score = sum(all_bleu)/len(all_bleu)
+    print("Average Perplexity Score =", avg_perplexity_score)
+    print("Average bleu Score =", avg_bleu_score)
+    #print(all_perplexity_score)
+    #print(metric)
+    print("metric.compute()", metric.compute())
+
 
     return sentence #all_perplexity_score,  avg_perplexity_score, metric.compute()
 
+
 # evaluateInput(evaluate, inputs)
+# evaluatemetric(evaluate, inputs)
 
     # enc_qus = [word_map.get(word, word_map['<unk>']) for word in question.split()]
     # question = torch.LongTensor(enc_qus).to(device).unsqueeze(0)
