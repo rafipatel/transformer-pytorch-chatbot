@@ -83,10 +83,7 @@ class LossWithLS(nn.Module):
         self.size = size
         
     def forward(self, prediction, target, mask):
-        """
-        prediction of shape: (batch_size, max_words, vocab_size)
-        target and mask of shape: (batch_size, max_words)
-        """
+
         prediction = prediction.view(-1, prediction.size(-1))   # (batch_size * max_words, vocab_size)
         target = target.contiguous().view(-1)   # (batch_size * max_words)
         mask = mask.float()
