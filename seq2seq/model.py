@@ -283,9 +283,9 @@ class Attn(nn.Module):
 #    num_directions, batch_size, hidden_size)*
 #
 
-class LuongAttnDecoderRNN(nn.Module):
+class DecoderLuongAttn(nn.Module):
     def __init__(self, attn_model, embedding, hidden_size, output_size, n_layers=1, dropout=0.1,attention = bool):
-        super(LuongAttnDecoderRNN, self).__init__()
+        super(DecoderLuongAttn, self).__init__()
 
         # Keep for reference
         self.attn_model = attn_model

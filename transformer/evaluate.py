@@ -119,7 +119,7 @@ def chat_with_chatbot(loadCheckpoint):
         
         # Display question and answer
         output_area.append_stdout(f"Question: {questions}\n")
-        output_area.append_stdout(f"ChatGPT-10: {sentence}\n")
+        output_area.append_stdout(f"Chatbot: {sentence}\n")
         
         # Clear input after processing
         text_input.value = ''
@@ -204,7 +204,7 @@ def evaluatemetric(evaluate, inputs):
         metric.update(raw_preds,word_tensor)
         # #print(perplexity_score)
         all_perplexity_score.append(perplexity_score.item())
-        print("chatGPT-10:",sentence)
+        print("Chatbot:",sentence)
         response_token = nltk.word_tokenize(response)
         output_token = nltk.word_tokenize(sentence)
     #     #print(response_token,output_token)
@@ -214,11 +214,11 @@ def evaluatemetric(evaluate, inputs):
         all_bleu.append(bleu_score)
     avg_perplexity_score = sum(all_perplexity_score)/len(all_perplexity_score)
     avg_bleu_score = sum(all_bleu)/len(all_bleu)
-    print("Average Perplexity Score =", avg_perplexity_score)
-    print("Average bleu Score =", avg_bleu_score)
-    #print(all_perplexity_score)
-    #print(metric)
-    print("metric.compute()", metric.compute())
+    # print("Average Perplexity Score =", avg_perplexity_score)
+    # print("Average bleu Score =", avg_bleu_score)
+    # #print(all_perplexity_score)
+    # #print(metric)
+    # print("metric.compute()", metric.compute())
 
 
     return sentence #all_perplexity_score,  avg_perplexity_score, metric.compute()

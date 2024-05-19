@@ -258,7 +258,7 @@ if loadFilename:
     embedding.load_state_dict(embedding_sd)
 # Initialize encoder & decoder models
 encoder = EncoderRNN(hidden_size, embedding, encoder_n_layers, dropout)
-decoder = LuongAttnDecoderRNN(attn_model, embedding, hidden_size, voc.num_words, decoder_n_layers, dropout,attention)
+decoder = DecoderLuongAttn(attn_model, embedding, hidden_size, voc.num_words, decoder_n_layers, dropout,attention)
 
 if loadFilename:
     encoder.load_state_dict(encoder_sd)
