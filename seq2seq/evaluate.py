@@ -101,28 +101,6 @@ responses = [
     "A cult classic gains a dedicated following, often after its initial release.",]
 
 
-# model_name = data['model']['model_name']
-# attn_model = data['model']['attn_model']
-# hidden_size = data['model']['hidden_size']
-# encoder_n_layers = data['model']['encoder_n_layers']
-# decoder_n_layers = data['model']['decoder_n_layers']
-# dropout = data['model']['dropout']
-# batch_size = data['model']['batch_size']
-
-
-# loadFilename = None # Set checkpoint to load from; set to None if starting from scratch
-# checkpoint_iter = data['model']['checkpoint_iter']
-# attention = data['model']['attention']
-
-
-
-# clip = data['clip'] 
-# teacher_forcing_ratio = data['teacher_forcing_ratio'] 
-# learning_rate = data['learning_rate']
-# decoder_learning_ratio = data['decoder_learning_ratio']
-# n_iteration = data['n_iteration']
-# print_every = data['print_every']
-# save_every = data['save_every']
 
 
 class GreedySearchDecoder(nn.Module):
