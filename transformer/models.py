@@ -7,9 +7,6 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
 class Embeddings(nn.Module):
-    """
-    Implements embeddings of the words and adds their positional encodings. 
-    """
     def __init__(self, vocab_size, d_model, max_len = 50):
         super(Embeddings, self).__init__()
         self.d_model = d_model
@@ -49,10 +46,7 @@ class MultiHeadAttention(nn.Module):
         self.concat = nn.Linear(d_model, d_model)
         
     def forward(self, query, key, value, mask):
-        """
-        query, key, value of shape: (batch_size, max_len, 512)
-        mask of shape: (batch_size, 1, 1, max_words)
-        """
+
         # (batch_size, max_len, 512)
         query = self.query(query)
         key = self.key(key)        
