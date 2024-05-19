@@ -322,6 +322,6 @@ def conversation(loadFilename):
 
     # # Begin chatting (uncomment and run the following line to begin)
     # input_to_chatbot(encoder, decoder, searcher, voc, inputs, responses)
-    # chat_with_chatbot(encoder, decoder, searcher, voc)
+    chat_with_chatbot(encoder, decoder, searcher, voc)
 
 
