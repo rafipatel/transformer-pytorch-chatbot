@@ -102,25 +102,6 @@ def train(input_variable, lengths, target_variable, mask, max_target_len, encode
 
     return sum(print_losses) / n_totals
 
-
-######################################################################
-# Training iterations
-# ~~~~~~~~~~~~~~~~~~~
-#
-# It is finally time to tie the full training procedure together with the
-# data. The ``trainIters`` function is responsible for running
-# ``n_iterations`` of training given the passed models, optimizers, data,
-# etc. This function is quite self explanatory, as we have done the heavy
-# lifting with the ``train`` function.
-#
-# One thing to note is that when we save our model, we save a tarball
-# containing the encoder and decoder ``state_dicts`` (parameters), the
-# optimizers’ ``state_dicts``, the loss, the iteration, etc. Saving the model
-# in this way will give us the ultimate flexibility with the checkpoint.
-# After loading a checkpoint, we will be able to use the model parameters
-# to run inference, or we can continue training right where we left off.
-#
-
 def trainIters(model_name, voc, pairs, encoder, decoder, encoder_optimizer, decoder_optimizer, embedding, encoder_n_layers, decoder_n_layers, save_dir, n_iteration, batch_size, print_every, save_every, clip, corpus_name, loadFilename,logger):
 
     print("Creating TrainingBatches..")
@@ -185,32 +166,6 @@ def trainIters(model_name, voc, pairs, encoder, decoder, encoder_optimizer, deco
 
 
 
-######################################################################
-# Run Model
-# ---------
-#
-# Finally, it is time to run our model!
-#
-# Regardless of whether we want to train or test the chatbot model, we
-# must initialize the individual encoder and decoder models. In the
-# following block, we set our desired configurations, choose to start from
-# scratch or set a checkpoint to load from, and build and initialize the
-# models. Feel free to play with different model configurations to
-# optimize performance.
-#
-
-# Configure models
-# model_name = 'cb_model'
-# attn_model = 'dot'
-# #``attn_model = 'general'``
-# #``attn_model = 'concat'``
-# hidden_size = 500
-# encoder_n_layers = 2
-# decoder_n_layers = 2
-# dropout = 0.1
-# batch_size = 64
-
-
 model_name = data['model']['model_name']
 attn_model = data['model']['attn_model']
 hidden_size = data['model']['hidden_size']
@@ -224,18 +179,6 @@ loadFilename = None # Set checkpoint to load from; set to None if starting from 
 checkpoint_iter = data['model']['checkpoint_iter']
 attention = data['model']['attention']
 
-
-# checkpoint_iter = 4000
-# attention = True
-
-#############################################################
-# Sample code to load from a checkpoint:
-#
-# .. code-block:: python
-#
-#    loadFilename = os.path.join(save_dir, model_name, corpus_name,
-#                        '{}-{}_{}'.format(encoder_n_layers, decoder_n_layers, hidden_size),
-#                        '{}_checkpoint.tar'.format(checkpoint_iter))
 
 # Load model if a ``loadFilename`` is provided
 if loadFilename:
@@ -270,19 +213,6 @@ encoder = encoder.to(device)
 decoder = decoder.to(device)
 
 
-
-######################################################################
-# Run Training
-# ~~~~~~~~~~~~
-#
-# Run the following block if you want to train the model.
-#
-# First we set training parameters, then we initialize our optimizers, and
-# finally we call the ``trainIters`` function to run our training
-# iterations.
-#
-
-# Configure training/optimization
 
 
 clip = data['clip'] 
