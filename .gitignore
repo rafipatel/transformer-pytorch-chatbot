@@ -5,7 +5,6 @@
 *.tar
 *.json
 *.jsonl
-*.txt
 *.wandb
 *.yaml
 
