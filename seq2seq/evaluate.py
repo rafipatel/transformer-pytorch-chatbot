@@ -257,7 +257,7 @@ def chat_with_chatbot(encoder, decoder, searcher, voc):
             
             # Display input and output
             output_area.append_stdout(f"User: {input_sentence}\n")
-            output_area.append_stdout(f"chatGPT Bro: {output_sentence}\n")
+            output_area.append_stdout(f"Chatbot: {output_sentence}\n")
         
         except Exception as e:
             output_area.append_stdout(f"Error: Encountered unknown word.\n,{e}")
